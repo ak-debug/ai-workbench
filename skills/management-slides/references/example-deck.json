@@ -1,0 +1,58 @@
+{
+  "title": "Generic presentation skeletons",
+  "footer": "Skeleton",
+  "slides": [
+    {
+      "section": "01 / PROCESS FLOW",
+      "title": "Show the path from input to outcome",
+      "subtitle": "Replace placeholders with clear actions and responsibilities.",
+      "layout": "flow",
+      "nodes": [
+        {"label": "INPUT", "lines": ["Starting point", "Relevant material"]},
+        {"label": "PROCESS", "lines": ["Main action", "Responsible role"], "dark": true},
+        {"label": "OUTCOME", "lines": ["Expected result", "Success measure"]}
+      ],
+      "takeaway": "One clear flow; one clear message.",
+      "source": "Generic skeleton only",
+      "notes": "Synthetic layout example. Replace all placeholders with verified content and citations. Arrows describe a logical flow, not a deployed architecture."
+    },
+    {
+      "section": "02 / SHARED HUB",
+      "title": "Show how teams use a shared capability",
+      "subtitle": "Connect roles to a common capability and a result.",
+      "layout": "hub",
+      "agents": ["Team A", "Team B", "Team C"],
+      "hub": {"label": "SHARED CAPABILITY", "lines": ["Common function", "Defined responsibility"]},
+      "result": {"label": "RESULT", "lines": ["Expected outcome", "Success measure"]},
+      "takeaway": "A simple hub makes shared responsibility visible.",
+      "source": "Generic skeleton only",
+      "notes": "Synthetic example. No real product, organization, integration support or measured result is represented."
+    },
+    {
+      "section": "03 / BEFORE AND AFTER",
+      "title": "Make the proposed change easy to understand",
+      "subtitle": "Use matching criteria and label proposed behavior honestly.",
+      "layout": "before-after",
+      "before": {"label": "CURRENT APPROACH", "actors": ["Role A", "Role B"], "node_label": "Input", "caption": "Describe the current workflow"},
+      "after": {"label": "PROPOSED APPROACH", "actors": ["Role A", "Role B"], "node_label": "Shared capability", "caption": "Describe the proposed workflow"},
+      "takeaway": "Distinguish current behavior from the proposed change.",
+      "source": "Generic skeleton only",
+      "notes": "Synthetic illustrative change, not a neutral product ranking. Use equal visual weight for neutral alternatives. No improvement or savings is asserted."
+    },
+    {
+      "section": "04 / ROADMAP",
+      "title": "Turn the next step into a clear roadmap",
+      "subtitle": "Keep actions short and define how progress will be checked.",
+      "layout": "roadmap",
+      "steps": [
+        {"label": "DISCOVER", "lines": ["Define the need", "Choose scope"]},
+        {"label": "PILOT", "lines": ["Try a small case", "Gather feedback"]},
+        {"label": "MEASURE", "lines": ["Check outcomes", "Review evidence"]},
+        {"label": "SCALE", "lines": ["Decide next step", "Expand if justified"], "dark": true}
+      ],
+      "takeaway": "Use evidence to decide what happens next.",
+      "source": "Generic skeleton only",
+      "notes": "Synthetic roadmap with no real dates, owners, commitments or organizational project details."
+    }
+  ]
+}
