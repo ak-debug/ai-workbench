@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "ai-workbench",
+  "description": "Reusable AI agent skills, tools and plugins for practical work.",
+  "version": "1.0.0",
+  "owner": {"name": "ak-debug", "url": "https://github.com/ak-debug"},
+  "plugins": [
+    {
+      "name": "management-slides",
+      "description": "Concise executive presentations with editable PowerPoint diagrams.",
+      "version": "1.0.0",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/management-slides"],
+      "category": "productivity",
+      "license": "MIT",
+      "homepage": "https://github.com/ak-debug/ai-workbench/tree/main/skills/management-slides",
+      "repository": "https://github.com/ak-debug/ai-workbench",
+      "keywords": ["presentations", "powerpoint", "slides", "agent-skill"]
+    }
+  ]
+}
