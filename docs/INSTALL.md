@@ -2,6 +2,14 @@
 
 Source repository: <https://github.com/ak-debug/ai-workbench>. Prefer a tagged release (see the [releases page](https://github.com/ak-debug/ai-workbench/releases)) over the moving `main` branch.
 
+For **Personal Writing Style**, use the
+[two-step setup guide](../skills/personal-writing-style/README.md): install the
+complete skill **and** merge the
+[global instruction snippet](../skills/personal-writing-style/global-instructions.md)
+into the host's persistent user instructions. Skill installation does not do that
+merge automatically. Choose a reviewed release or commit that contains the package;
+an older release may not include it. The examples below show Management Slides.
+
 ## Portable local installation
 
 1. Download or clone the repository at a reviewed release or commit.
@@ -30,6 +38,10 @@ Use these in Claude Code:
 ```
 
 The catalog follows Claude Code's documented marketplace format and is checked structurally in CI. Installation has not yet been verified end to end in a live Claude Code session; validate a checkout with `claude plugin validate .` if you maintain a fork.
+
+For the writing package, use `/plugin install personal-writing-style@ai-workbench`
+and invoke `/personal-writing-style:personal-writing-style`. You must still complete
+the global-instruction setup separately; no package hook modifies personal files.
 
 ## Shareable installation prompt
 
