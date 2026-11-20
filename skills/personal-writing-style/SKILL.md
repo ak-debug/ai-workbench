@@ -1,6 +1,6 @@
 ---
 name: personal-writing-style
-description: Draft and refine proposals, engineering feedback, team messages, emails, reports and documentation in a professional, direct and natural voice. Use when writing text on the user's behalf or matching their preferred writing style.
+description: Draft and refine proposals, engineering feedback, team messages, emails, reports, documentation and technical write-ups in a professional, direct and natural voice. Use when writing text on the user's behalf or matching their preferred writing style.
 license: MIT
 ---
 
@@ -20,6 +20,7 @@ intent without copying typing mistakes or making the language unnecessarily form
    | Proposal or standards document | [Proposal](references/examples/proposal.md) |
    | Group message or short email | [Team message](references/examples/team-message.md) |
    | Review finding or technical recommendation | [Technical feedback](references/examples/technical-feedback.md) |
+   | Security, digital forensics or investigation blog post | [Technical blog post](references/examples/technical-blog-post.md) |
 
 All examples are newly written and fictional. Use their tone and level of detail,
 not their facts, commitments or exact wording. For a one-sentence edit, apply the

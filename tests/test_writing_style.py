@@ -6,7 +6,12 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
 SKILL = ROOT / 'skills/personal-writing-style'
-EXAMPLES = ('proposal.md', 'team-message.md', 'technical-feedback.md')
+EXAMPLES = (
+    'proposal.md',
+    'team-message.md',
+    'technical-feedback.md',
+    'technical-blog-post.md',
+)
 
 
 class WritingStyleTests(unittest.TestCase):

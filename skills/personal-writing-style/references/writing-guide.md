@@ -35,8 +35,28 @@ language. "I suggest we test this with two teams first" is usually better than
 | Technical feedback | Observation, impact, recommendation, verification needed | Treating a suspected risk as a confirmed incident |
 | Report | Outcome, evidence, limitations, next decisions | A diary of reads, searches and tool calls |
 | Documentation | Purpose, prerequisites, instructions, checks, limitations | Undocumented assumptions or promises of universal compatibility |
+| Technical blog post | Symptom or question, relevant mechanism, evidence and reasoning, verification, takeaways | A tool-by-tool diary or a conclusion stronger than the evidence |
 
 These are starting points, not required headings. Use only what the draft needs.
+
+## Technical blog posts
+
+- Open with what the reader would notice and what the write-up will explain. For
+  a lab, challenge or experiment, identify the setting and relevant scope early.
+- Explain the mechanism that helps the reader interpret the evidence. Use
+  first person for actions the author actually took. Include a detour when it
+  explains why the investigation changed direction.
+- Show the evidence behind each key conclusion. Introduce a result or screenshot
+  with the question it answers and point out the specific signal to look for.
+  Say what the final check established and what is still uncertain.
+- End with a takeaway the reader can apply to a similar problem. Credit the
+  challenge or reference material when it helped shape the work.
+
+Read the [fictional technical blog post](examples/technical-blog-post.md) for a
+compact example. The author's public forensics posts show how to connect an
+observed symptom to the relevant technical detail in a longer article.
+[Repairing Corrupted PNG Files by Hand](https://ak-debug.github.io/posts/repairing-corrupted-png-files/) and
+[Image Forensics](https://ak-debug.github.io/posts/image-forensics-metadata-and-hidden-dimensions/).
 
 ## Sentence and formatting habits
 
