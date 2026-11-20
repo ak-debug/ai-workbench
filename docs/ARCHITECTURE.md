@@ -10,6 +10,14 @@ The README is the human-readable catalog. `.claude-plugin/marketplace.json` is t
 
 Management Slides has one canonical copy at `skills/management-slides/`. Its marketplace entry uses `source: "./"`, `strict: false` and an explicit `skills` path, following the public Anthropic skills repository pattern. There is no root `plugin.json` and no duplicated skill directory.
 
+Personal Writing Style follows the same single-copy pattern at
+`skills/personal-writing-style/`. It is instruction-only: a task-specific skill,
+a writing guide, fictional examples and a separate global-instruction snippet.
+The snippet is deliberately not injected by a startup hook or an installer. A user
+merges it into the host's supported persistent instructions after reviewing the diff.
+Skill discovery, global context loading and delegated-agent handoffs are separate
+concerns; the setup guide explains each without promising universal activation.
+
 For a future plugin with startup hooks, remote servers or native host APIs, place all of its resources inside `plugins/<id>/` and list `source: "./plugins/<id>"`. Do not make plugin paths reach outside that package. Document any permissions, data access and network behavior.
 
 ## Portability boundaries

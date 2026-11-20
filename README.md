@@ -9,6 +9,7 @@ A growing, open-source collection of small, documented building blocks. Each ite
 | Item | Type | What it does |
 | --- | --- | --- |
 | [Management Slides](skills/management-slides/) | Agent Skill; Claude Code marketplace package | Creates concise executive presentations with editable PowerPoint diagrams and consistent typography. |
+| [Personal Writing Style](skills/personal-writing-style/) | Agent Skill; global-instruction snippet; Claude Code marketplace package | Drafts professional, direct proposals, feedback and messages using a detailed guide and fictional examples. |
 
 Tools and standalone plugins have their own directories for future additions. They are not populated with pretend implementations.
 
@@ -36,6 +37,19 @@ Include an editable process flow. Save the PowerPoint and PDF to [output directo
 ```
 
 See [installation instructions and a shareable agent prompt](docs/INSTALL.md). A repository URL by itself does not install a skill in every agent tool.
+
+### Make the writing style a personal default
+
+[Personal Writing Style](skills/personal-writing-style/) needs **two setup steps**:
+install the complete skill folder, then merge its
+[global instruction snippet](skills/personal-writing-style/global-instructions.md)
+into your host's persistent user instructions. The short global section establishes
+the default; the skill supplies the detailed workflow and relevant examples on demand.
+Installing a skill or marketplace package alone does not configure the global section
+or guarantee that every agent loads the skill. Follow the
+[writing-style setup guide](skills/personal-writing-style/README.md) for locations,
+verification and a shareable installation prompt. Nothing changes your configuration
+automatically.
 
 ### Use the Claude Code marketplace
 
@@ -82,6 +96,7 @@ To regenerate the skeleton PNG, install [preview dependencies](skills/management
 - Inspect scripts before running them. Agent tools may need filesystem access and approval to execute code.
 - The deck generator lays out supplied content; it does not research facts or export PDF.
 - Structural tests do not establish visual quality or prove that an AI agent will follow every instruction. Render and inspect real output.
+- Writing-style setup and delegated-agent inheritance vary by host. Check the global instructions and skill separately; human review is still needed for tone and factual claims.
 - Privacy checks catch selected patterns, not every possible secret or confidential fact. Human review is required before publication.
 
 ## License

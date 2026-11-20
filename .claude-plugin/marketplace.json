@@ -2,7 +2,7 @@
   "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
   "name": "ai-workbench",
   "description": "Reusable AI agent skills, tools and plugins for practical work.",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "owner": {"name": "ak-debug", "url": "https://github.com/ak-debug"},
   "plugins": [
     {
@@ -17,6 +17,19 @@
       "homepage": "https://github.com/ak-debug/ai-workbench/tree/main/skills/management-slides",
       "repository": "https://github.com/ak-debug/ai-workbench",
       "keywords": ["presentations", "powerpoint", "slides", "agent-skill"]
+    },
+    {
+      "name": "personal-writing-style",
+      "description": "Professional, direct proposals, feedback and messages; includes a separate global-instruction snippet for consistent defaults.",
+      "version": "1.0.0",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/personal-writing-style"],
+      "category": "productivity",
+      "license": "MIT",
+      "homepage": "https://github.com/ak-debug/ai-workbench/tree/main/skills/personal-writing-style",
+      "repository": "https://github.com/ak-debug/ai-workbench",
+      "keywords": ["writing", "proposals", "documentation", "agent-skill"]
     }
   ]
 }

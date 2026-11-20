@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.1.0 (unreleased)
+
+- Add the instruction-only Personal Writing Style skill, a detailed writing guide
+  and newly written fictional proposal, team-message and technical-feedback examples.
+- Include a separate global-instruction snippet and explain why consistent defaults
+  need both global guidance and the on-demand skill.
+- Document OpenCode and Claude Code setup, delegated-agent handoffs, verification,
+  privacy boundaries and a review-first installation prompt.
+- Add a Claude Code marketplace entry for the new skill and package regression tests.
+- Existing Management Slides package remains at version 1.0.0.
+
 ## 1.0.0
 
 - Initial multi-purpose AI Workbench structure for skills, tools and plugins.

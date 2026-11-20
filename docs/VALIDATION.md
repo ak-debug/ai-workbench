@@ -18,3 +18,27 @@ The initial public copy was checked locally before any commit or push:
 - Legal ownership and publication approval: the maintainer must confirm these before release.
 
 Pattern scanning cannot establish that all possible confidential information is absent. Human review remains necessary for each future contribution.
+
+## Personal Writing Style package
+
+Local checks for the writing-style addition:
+
+- 20 repository/preview/package tests passed with Python 3.12, including eight new
+  writing-package checks for structure, references, standalone-copy links, fictional
+  example labels, the short global snippet, the explicit two-step setup requirement
+  and the marketplace entry.
+- The two existing editable-deck structural tests still passed. No slide-generator
+  code or Management Slides package version was changed.
+- The repository validator passed skill-frontmatter, catalog, local-link and selected
+  publication-risk checks. A local extra deny-list check also passed; its terms are
+  not part of this public record.
+- The new package contains Markdown only: no scripts, hooks, remote services, package
+  dependencies or automatic changes to personal instruction files.
+- Installation guidance was checked against the public OpenCode skill/instruction
+  docs and Claude Code skill/memory docs. It explicitly requires reviewing and
+  merging global instructions separately from installing the skill.
+
+These are structural and documentation checks. They do not prove writing quality,
+automatic skill selection, global-instruction loading, delegated-agent inheritance
+or live marketplace installation. Confirm those in each target host. No private
+correspondence or source project document is included; the examples are fictional.
