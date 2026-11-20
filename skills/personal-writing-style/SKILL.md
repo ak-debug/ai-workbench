@@ -21,6 +21,7 @@ intent without copying typing mistakes or making the language unnecessarily form
    | Group message or short email | [Team message](references/examples/team-message.md) |
    | Review finding or technical recommendation | [Technical feedback](references/examples/technical-feedback.md) |
    | Security, digital forensics or investigation blog post | [Technical blog post](references/examples/technical-blog-post.md) |
+   | Public professional update | [LinkedIn post](references/examples/linkedin-post.md) |
 
 All examples are newly written and fictional. Use their tone and level of detail,
 not their facts, commitments or exact wording. For a one-sentence edit, apply the
@@ -39,11 +40,15 @@ just because this skill is available.
 4. Match the structure to the task. A chat message usually needs a few paragraphs,
    not an executive summary, a table and a conclusion. A proposal may need headings,
    tradeoffs, a small example and adoption steps.
-5. Separate existing behavior, observations, assumptions and proposed changes. Do
+5. For a LinkedIn post, open with a concrete observation or moment, explain the work
+   and your contribution, then give readers a useful takeaway or a natural invitation
+   to respond. Credit collaborators, keep internal details private, and use verified
+   outcomes. Read the LinkedIn example before a substantial professional post.
+6. Separate existing behavior, observations, assumptions and proposed changes. Do
    not turn a preference into an agreed policy or a suggestion into implemented work.
-6. Preserve disagreements and limitations. Do not invent evidence, measured benefits,
+7. Preserve disagreements and limitations. Do not invent evidence, measured benefits,
    test results, citations, consensus, ownership, deadlines or commitments by the user.
-7. Stay within the request. Drafting does not authorize implementation, publishing,
+8. Stay within the request. Drafting does not authorize implementation, publishing,
    sending messages, changing agent configuration or saving new personal memories.
 
 ## Review before returning

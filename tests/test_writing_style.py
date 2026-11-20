@@ -11,6 +11,7 @@ EXAMPLES = (
     'team-message.md',
     'technical-feedback.md',
     'technical-blog-post.md',
+    'linkedin-post.md',
 )
 
 
@@ -28,6 +29,13 @@ class WritingStyleTests(unittest.TestCase):
         self.assertIn('(global-instructions.md)', text)
         for name in EXAMPLES:
             self.assertIn(f'(references/examples/{name})', text)
+
+    def test_linkedin_guidance_covers_evidence_and_collaboration(self):
+        guide = (SKILL / 'references/writing-guide.md').read_text()
+        self.assertIn('## LinkedIn posts', guide)
+        self.assertIn('credit collaborators', guide)
+        self.assertIn('verified result', guide)
+        self.assertIn('generic motivational slogan', guide)
 
     def test_copyable_global_baseline_is_short_and_names_skill(self):
         text = (SKILL / 'global-instructions.md').read_text()
@@ -82,6 +90,7 @@ class WritingStyleTests(unittest.TestCase):
         self.assertEqual(entries['personal-writing-style']['source'], './')
         self.assertFalse(entries['personal-writing-style']['strict'])
         self.assertEqual(entries['management-slides']['version'], '1.0.0')
+        self.assertEqual(entries['personal-writing-style']['version'], '1.2.0')
 
 
 if __name__ == '__main__':
