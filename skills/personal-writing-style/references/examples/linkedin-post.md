@@ -1,24 +1,22 @@
 # Example: LinkedIn technical achievement post
 
-Fictional example. The person, project, results, event and collaborators below are
-invented to illustrate tone and structure. They are not claims about the maintainer.
+Fictional example. The project, measurements and collaborator are invented to
+illustrate the writing style. They are not claims about the maintainer.
 
 ---
 
-Our nightly test run was taking longer than the deployment it was supposed to protect.
+A slow test suite made it difficult to tell whether a small change was ready
+for review. I worked with my teammate Maya to split the independent checks into
+parallel groups and presented the approach at an internal engineering showcase.
 
-At an internal engineering showcase, I presented a change I worked on with my teammate
-Maya to split the slowest checks into parallel groups. The goal was to shorten feedback
-time while keeping the same coverage.
+In our test environment, the median run dropped from 24 minutes to 11. We kept
+the original full run while comparing results, so we could check that the new
+groups still covered the same cases.
 
-In our test environment, the median run went from 24 minutes to 11. That gave us a
-clearer signal earlier in the review. We also kept the original full run as a separate
-check while we compared results.
+The useful lesson for me was to make the comparison part of the change. A
+faster result only helps if the checks are still giving the team the signal
+they need.
 
-I appreciated the chance to present the work, explain the tradeoffs and get questions
-from people outside our team. I’m now documenting the approach so other teams can decide
-whether it fits their test suites.
-
-What part of your test pipeline would you improve first?
+Thanks to Maya for working through the grouping and validation with me.
 
 #SoftwareEngineering #Testing
