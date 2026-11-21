@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.3.0 (unreleased)
+
+- Add LinkedIn post guidance and a fictional technical achievement example to
+  Personal Writing Style.
+
 ## 1.2.0 (unreleased)
 
 - Add technical blog writing guidance informed by the author's public forensics

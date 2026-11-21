@@ -31,6 +31,7 @@ personal-writing-style/
     └── examples/
         ├── proposal.md
         ├── team-message.md
+        ├── linkedin-post.md
         ├── technical-blog-post.md
         └── technical-feedback.md
 ```
@@ -39,6 +40,7 @@ personal-writing-style/
 - [Global instructions](global-instructions.md) provide the short baseline to merge.
 - [Writing guide](references/writing-guide.md) explains voice, structure, evidence and editing.
 - [Examples](references/examples/) are newly written fictional samples, not private correspondence.
+- [LinkedIn post example](references/examples/linkedin-post.md) demonstrates a concise public update about collaborative technical work.
 
 ## Step 1: install the complete skill folder
 

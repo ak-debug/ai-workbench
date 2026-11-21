@@ -34,10 +34,30 @@ language. "I suggest we test this with two teams first" is usually better than
 | Proposal | Purpose, recommendation, practical details, tradeoffs, adoption | A broad architecture redesign unrelated to the ask |
 | Technical feedback | Observation, impact, recommendation, verification needed | Treating a suspected risk as a confirmed incident |
 | Report | Outcome, evidence, limitations, next decisions | A diary of reads, searches and tool calls |
+| LinkedIn post | Specific hook, work and personal contribution, useful takeaway, optional invitation | A résumé pasted into a post, generic hype, or unsupported metrics |
 | Documentation | Purpose, prerequisites, instructions, checks, limitations | Undocumented assumptions or promises of universal compatibility |
 | Technical blog post | Symptom or question, relevant mechanism, evidence and reasoning, verification, takeaways | A tool-by-tool diary or a conclusion stronger than the evidence |
 
 These are starting points, not required headings. Use only what the draft needs.
+
+## LinkedIn posts
+
+- Start with a concrete problem, surprising observation or moment from the work. Keep
+  the opening connected to the actual post, not a generic motivational slogan.
+- Give enough context to explain what you built, learned, presented or earned. Make
+  your contribution clear when you worked with a team, and credit collaborators by
+  name when the user supplies the names.
+- Connect a credential to the work or learning it represents. Use the credential's
+  official title and do not imply that passing an exam proves broader experience.
+- Include one verified result or specific lesson when available. If the work is
+  confidential or results are unknown, keep the description high-level and omit
+  customer details, internal designs and guessed numbers.
+- Add a relevant image or project link when available. A personal update does not
+  need every achievement, credential or project in one post.
+- End with a question or invitation only when it feels natural. Use a few relevant
+  hashtags rather than a long block of tags.
+- Read the [LinkedIn post example](examples/linkedin-post.md) for a compact technical
+  achievement post. The fictional details are not a template for facts.
 
 ## Technical blog posts
 
