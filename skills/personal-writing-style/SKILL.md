@@ -1,6 +1,6 @@
 ---
 name: personal-writing-style
-description: Draft and refine proposals, engineering feedback, team messages, emails, reports, documentation and technical write-ups in a professional, direct and natural voice. Use when writing text on the user's behalf or matching their preferred writing style.
+description: Draft and refine proposals, engineering feedback, team messages, emails, reports, documentation, technical write-ups and LinkedIn posts in a professional, direct and natural voice. Use when writing text on the user's behalf or matching their preferred writing style.
 license: MIT
 ---
 

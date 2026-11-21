@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.0 (unreleased)
+
+- Include social posts in the writing skill and global guidance, with audience-aware tone.
+
 ## 1.5.0 (unreleased)
 
 - Update the LinkedIn example and guidance to reflect the author’s approved tone.

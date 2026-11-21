@@ -1,8 +1,8 @@
 # Personal Writing Style
 
 A portable, instruction-only skill for professional, direct and natural proposals,
-engineering feedback, team messages, emails, reports, documentation and technical
-blog posts. It keeps the user's intent and technical meaning without unnecessary
+engineering feedback, team messages, emails, reports, documentation, technical
+blog posts and LinkedIn updates. It keeps the user's intent and technical meaning without unnecessary
 formality or filler.
 
 ## Use both global instructions and the skill
