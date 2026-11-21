@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.2.0 (unreleased)
+
+- Add technical blog writing guidance informed by the author's public forensics
+  posts, with a fictional file-integrity investigation as an example.
+
 ## 1.1.0 (unreleased)
 
 - Add the instruction-only Personal Writing Style skill, a detailed writing guide

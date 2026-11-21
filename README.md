@@ -9,7 +9,7 @@ A growing, open-source collection of small, documented building blocks. Each ite
 | Item | Type | What it does |
 | --- | --- | --- |
 | [Management Slides](skills/management-slides/) | Agent Skill; Claude Code marketplace package | Creates concise executive presentations with editable PowerPoint diagrams and consistent typography. |
-| [Personal Writing Style](skills/personal-writing-style/) | Agent Skill; global-instruction snippet; Claude Code marketplace package | Drafts professional, direct proposals, feedback and messages using a detailed guide and fictional examples. |
+| [Personal Writing Style](skills/personal-writing-style/) | Agent Skill; global-instruction snippet; Claude Code marketplace package | Drafts professional, direct proposals, feedback, messages and technical write-ups using a detailed guide and fictional examples. |
 
 Tools and standalone plugins have their own directories for future additions. They are not populated with pretend implementations.
 

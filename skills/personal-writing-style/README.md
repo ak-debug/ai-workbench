@@ -1,8 +1,9 @@
 # Personal Writing Style
 
 A portable, instruction-only skill for professional, direct and natural proposals,
-engineering feedback, team messages, emails, reports and documentation. It keeps
-the user's intent and technical meaning without unnecessary formality or filler.
+engineering feedback, team messages, emails, reports, documentation and technical
+blog posts. It keeps the user's intent and technical meaning without unnecessary
+formality or filler.
 
 ## Use both global instructions and the skill
 
@@ -30,6 +31,7 @@ personal-writing-style/
     └── examples/
         ├── proposal.md
         ├── team-message.md
+        ├── technical-blog-post.md
         └── technical-feedback.md
 ```
 
