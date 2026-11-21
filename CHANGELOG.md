@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.5.0 (unreleased)
+
+- Update the LinkedIn example and guidance to reflect the author’s approved tone.
+
 ## 1.4.0 (unreleased)
 
 - Improve the technical blog and LinkedIn examples with concrete reasoning and a more natural voice.

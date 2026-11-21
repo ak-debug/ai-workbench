@@ -90,7 +90,7 @@ class WritingStyleTests(unittest.TestCase):
         self.assertEqual(entries['personal-writing-style']['source'], './')
         self.assertFalse(entries['personal-writing-style']['strict'])
         self.assertEqual(entries['management-slides']['version'], '1.0.0')
-        self.assertEqual(entries['personal-writing-style']['version'], '1.3.0')
+        self.assertEqual(entries['personal-writing-style']['version'], '1.4.0')
 
 
 if __name__ == '__main__':
