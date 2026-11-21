@@ -42,8 +42,13 @@ These are starting points, not required headings. Use only what the draft needs.
 
 ## LinkedIn posts
 
-- Start with a concrete problem, surprising observation or moment from the work. Keep
-  the opening connected to the actual post, not a generic motivational slogan.
+- Start with a punchy observation that gives readers a reason to keep reading.
+  Connect it to a concrete problem or moment from the work, so it does not become
+  a generic motivational slogan.
+- Make each line engaging and easy to follow. Use short paragraphs, selective bold
+  text and relevant emoji when they add energy or help readers scan the post.
+- Convey the user's excitement, pride or appreciation when their context supports it.
+  Let the reader feel why the moment mattered without inventing emotions or events.
 - Give enough context to explain what you built, learned, presented or earned. Make
   your contribution clear when you worked with a team, and credit collaborators by
   name when the user supplies the names.

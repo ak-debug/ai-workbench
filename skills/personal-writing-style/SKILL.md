@@ -40,7 +40,7 @@ just because this skill is available.
 4. Match the structure to the task. A chat message usually needs a few paragraphs,
    not an executive summary, a table and a conclusion. A proposal may need headings,
    tradeoffs, a small example and adoption steps.
-5. For a LinkedIn post, open with a concrete observation or moment, explain the work
+5. For a LinkedIn post, open with a punchy observation tied to the work, explain it
    and your contribution, then give readers a useful takeaway or a natural invitation
    to respond. Credit collaborators, keep internal details private, and use verified
    outcomes. Read the LinkedIn example before a substantial professional post.
