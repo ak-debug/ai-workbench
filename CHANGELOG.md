@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.4.0 (unreleased)
+
+- Improve the technical blog and LinkedIn examples with concrete reasoning and a more natural voice.
+
 ## 1.3.0 (unreleased)
 
 - Add LinkedIn post guidance and a fictional technical achievement example to
