@@ -12,6 +12,7 @@
 | Panel/diagram body | 17–19 pt; 16 pt minimum for core diagram content |
 | Takeaway | 17–19 pt white bold, one sentence |
 | Source/footer | 8–9 pt; full details belong in notes |
+| `system` diagram | Node label 12–13 pt bold; sub-label 10–11 pt; legend/caption 10.5 pt; pill/header 9.5 pt. Only this pattern may go below 16 pt |
 
 Use medium-weight-looking bold, not decorative or overly heavy display faces. Do not inherit a theme font silently. Native editable text is preferred to rasterized labels.
 
@@ -25,6 +26,7 @@ Use medium-weight-looking bold, not decorative or overly heavy display faces. Do
 | Body gray | `#525E6C` |
 | Light panel | `#F2F5F9` |
 | Neutral connector | `#A9B6C6` |
+| Optional/dashed path | `#8A96A3` (outline and arrow); pill `#D1D5DB`; legend border `#DFE6EF` |
 | White | `#FFFFFF` |
 
 Use blue headings on light cards and cyan headings on navy cards. White body text on navy. Reserve colored text for emphasis; avoid a rainbow palette, gradients and red “attack” styling. Neutral product comparisons and question-routing alternatives must have equal styling: dark-versus-light implies preference. Use asymmetric dark emphasis only for an intentional recommendation. Capabilities/value panels within a product overview may contrast, but keep both products' overview slides identical in structure and colors.
@@ -92,11 +94,61 @@ Use 3–4 numbered circles on a thin horizontal line with aligned cards below. S
 
 Two or three cards. Highlight one in navy only when intentional emphasis or recommendation warrants it; otherwise use equal light cards. A product overview uses “Core capabilities” and “Value for teams,” not “Pros” and “Cons.” Give each compared product the same overview layout. Later question-mapping cards should contain recognizable user questions, each clearly associated with its solution, rather than a second abstract capabilities comparison.
 
+### 6. System / pipeline diagram (`system`)
+
+Use when one slide must show how several parts fit together: what goes in, the core engine, the hand-off, the stages and any optional alternative path. It is the denser, architecture-style diagram, so give it the whole slide and keep the subtitle to one line.
+
+```
+╭─ END TO END, RUN BY ONE ORCHESTRATOR ──────────────────────────────────────╮
+│ [Input A] ─┐                                                               │
+│ [Input B] ─┼→ [ Engine ] → [ Hand-off ] → [ Stage ] → [ Stage ] → [ Report ]│
+│ [Input C] ─┘                    ┆                                    ▲      │
+╰─────────────────────────────────┆────────────────────────────────────┆─────╯
+  legend                          ╰┄→ [ Alt ] ┄→ [ Alt ] ┄→ [ Alt ] ┄┄┄┄╯
+```
+
+Visual vocabulary. Every encoding means one thing, so the diagram can be read without the text:
+
+| Element | Style | Meaning |
+|---|---|---|
+| `input` node | White fill, blue outline | Something a person or team provides |
+| `step` node | Navy fill, white label | An action performed by the orchestrated path |
+| `handoff` node | Blue fill, white label | The artifact or result that crosses a boundary: the one thing everything agrees on |
+| `optional` node | White fill, dashed gray `#8A96A3` outline | Alternative, external or not-required path |
+| Main arrow | Solid navy, filled arrowhead | Primary flow, left to right |
+| Alternate arrow | Dashed gray, arrowhead | Optional route; leaves and rejoins the main path |
+| Container | `#F2F5F9` panel, blue border, pill label overlapping the top border | “Everything inside is one orchestrated whole” |
+| Column header | 9.5 pt bold gray caps (`YOU PROVIDE` / `YOU GET`) | Optional; use when inputs, process and outputs need labels |
+| Nested stages | Blue sub-cards stacked inside a tall navy card, light-blue down arrows | Internal steps of one component |
+| Legend | White box, hairline border, swatch + 1 line each | Only for encodings that are not self-evident (2–3 rows) |
+
+Rules:
+
+- Max 7 columns across; 3–4 stacked nodes in any column. Fewer is better. If it does not fit, remove detail before reducing type.
+- Each node is a **label + one short sub-label** (3–6 words). No paragraphs.
+- Use blue (`handoff`) sparingly, for 1–3 nodes. It is the visual anchor.
+- The alternate lane sits **below** the container and leaves from the hand-off node, then rejoins at the result node. It must not cross any text.
+- Do not show arrows between nodes that have no real dependency. Use `no_in` / `no_out` on a node when a fan-out or fan-in would imply one.
+- This is the only pattern allowed below the 16 pt minimum: node labels 12–13 pt bold, sub-labels 10–11 pt, legend/captions 10.5 pt, pill/header 9.5 pt. Treat these as a floor, not a target; shorten text first.
+- Keep the takeaway strip, or if the diagram needs the height, a one-line light strip like `#E8F0FF` with blue bold text.
+
+## How to build a good diagram
+
+Build diagrams **natively in PowerPoint objects**, not as images placed on a slide:
+
+1. **Sketch first, in words.** List the nodes and their role (`input` / `step` / `handoff` / `optional`), then the arrows. Decide what is the hand-off. If you cannot name it, the diagram is not ready.
+2. **Generate it from the `system` layout** (`scripts/build_deck.py`). This produces rounded-rectangle nodes with live text inside the shape, connectors glued to the shapes' connection points (so they follow a node when it is moved), one legend group and one nested-engine group, all named meaningfully. For one-off tweaks, edit the resulting `.pptx` directly.
+3. **Or hand-build with the same primitives** (rounded rectangle + connector with a glued begin/end + arrowhead) when working outside the script. Match the vocabulary above, spacing and sizes.
+4. **Render and inspect.** Check wrapping, arrow endpoints, dashed paths not crossing text, and that the container pill does not collide with the subtitle.
+
+draw.io (diagrams.net), Visio and similar tools are fine for **sketching** the structure with the user, but do not place their exports on the slide: an exported PNG is a flat picture, and an exported SVG is not a set of PowerPoint connectors. If the user supplies one, **rebuild it natively** using the vocabulary above, and keep the original only as a reference outside the deck. If a non-editable picture is truly unavoidable, say so explicitly. Never reuse a diagram from a supplied deck as a public example; re-draw it with generic labels.
+
 ## Editable construction
 
 - Use native PowerPoint shapes, live text and connectors, plus native tables/charts when appropriate. Every generated component must remain individually editable and movable. No full-slide screenshots, flattened diagrams, rasterized labels or text converted to outlines. Disclose any unavoidable non-editable source artwork.
 - Use native arrowheads or small editable direction markers. Do not let arrows cross text or sit inside a node body.
 - Connect actual edges; use equal spacing and consistent line width. Keep simple diagrams free of backward arrows unless a return flow is necessary.
+- Prefer connectors **glued** to shape connection points (top/left/bottom/right) over loose lines, so moving a node keeps its arrows attached.
 - Put card text inside its shape, or group the card and label using ordinary PowerPoint groups that the user can ungroup. Keep connectors independently editable and attach them to shapes where supported so moving a node retains the connection. Name shapes meaningfully for future edits; minor edits must not require rerunning the generator.
 - For architecture diagrams distinguish control/configuration, model requests and tool calls. Never route calls through components that do not perform them.
 - Avoid special fonts/icons that depend on a private installation. Simple editable graph dots/edges and person/file motifs are enough.
