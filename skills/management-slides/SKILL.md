@@ -16,7 +16,7 @@ compatibility: Instructions work across Agent Skills hosts. Optional generator r
 - Use a white canvas, navy/blue/cyan panels, consistent margins, bold hierarchy and a short takeaway strip at the bottom.
 - Give neutral alternatives equal visual weight. Reserve asymmetric dark emphasis for an intentional recommendation.
 - Introduce compared products with matching **Core capabilities / Value for teams** slides before comparing them.
-- Prefer editable diagrams over dense text: flows, shared hubs, before/after panels and numbered roadmaps.
+- Prefer editable diagrams over dense text: flows, shared hubs, before/after panels, numbered roadmaps and system diagrams.
 - **Keep components editable and movable in PowerPoint.** Use native shapes, live text, connectors, tables and charts, not flattened diagram images or outlined text. Put labels inside their cards or use ordinary groups that can be ungrouped. Name objects meaningfully. Disclose unavoidable non-editable source artwork.
 - When introducing another team's product, start with what it does and its value. Explain differences neutrally later; do not open with unsolicited negative positioning.
 - Put full citations, methodology and technical details in speaker notes. Keep essential qualifiers visible, including whether a result is illustrative, potential or measured.
@@ -36,8 +36,9 @@ compatibility: Instructions work across Agent Skills hosts. Optional generator r
 
 ## Diagrams
 
-- Use `flow`, `hub`, `before-after`, `roadmap` and `cards` patterns from the design guide.
-- Labels identify who does what, not just component names. Use 2–4 nodes for management flows.
+- Use `flow`, `hub`, `before-after`, `roadmap`, `cards` and `system` patterns from the design guide. Use `system` when one slide must show inputs, an engine, a hand-off, stages and an optional alternative path (an architecture-style diagram with a container, role-coded nodes, dashed optional paths and a legend).
+- Build diagrams from **native PowerPoint shapes and glued connectors**, never as a placed picture. Sketching in draw.io/Visio with the user is fine, but rebuild the result natively rather than inserting an export. See "How to build a good diagram" in the design guide.
+- Labels identify who does what, not just component names. Use 2–4 nodes for management flows; the `system` pattern may use up to 7 columns with a label plus one short sub-label each.
 - Show the main action or information flow left to right. Several role cards can converge on a shared capability, then a result card.
 - Keep arrows outside cards, attach to edges where supported, and use consistent blue/cyan direction markers. Use editable lines, not Unicode arrows as the only explanation.
 - Logical responsibility diagrams are not network topologies. Label proposed integrations and do not draw false dependencies.

@@ -53,6 +53,71 @@
       "takeaway": "Use evidence to decide what happens next.",
       "source": "Generic skeleton only",
       "notes": "Synthetic roadmap with no real dates, owners, commitments or organizational project details."
+    },
+    {
+      "section": "05 / SYSTEM DIAGRAM",
+      "title": "Show how the parts fit and which path is optional",
+      "subtitle": "One hand-off connects the orchestrated path to the alternative.",
+      "layout": "system",
+      "container": {"label": "End to end, run by one orchestrator"},
+      "columns": [
+        {"nodes": [
+          {"label": "Input A", "sub": "detail"},
+          {"label": "Input B"},
+          {"label": "Input C", "sub": "detail"}
+        ]},
+        {"nodes": [{"label": "Orchestrator", "sub": "prepares the environment", "role": "step"}], "tall": true},
+        {"nodes": [{"label": "Hand-off", "sub": "one agreed file", "role": "handoff"}]},
+        {"nodes": [{"label": "Stage 1", "sub": "check before"}]},
+        {"nodes": [{"label": "Stage 2", "sub": "apply the change"}]},
+        {"nodes": [{"label": "Stage 3", "sub": "check after"}]},
+        {"nodes": [{"label": "Report", "sub": "what changed", "role": "handoff"}]}
+      ],
+      "alternate": {
+        "label": "Other ways: an existing path",
+        "caption": "Reuse the hand-off with tools you already have",
+        "from": [2, 0],
+        "to": [6, 0],
+        "nodes": [
+          {"label": "Existing tool", "sub": "before"},
+          {"label": "Apply change", "sub": "same step"},
+          {"label": "Existing tool", "sub": "after"}
+        ]
+      },
+      "legend": [
+        {"role": "step", "text": "Run by the orchestrator"},
+        {"role": "optional", "text": "Other ways in and out"}
+      ],
+      "takeaway": "Use the whole path, or only the pieces you need.",
+      "source": "Generic skeleton only",
+      "notes": "Synthetic system diagram with placeholder names only. Arrows describe a logical flow; dashed items are optional alternatives, not deployed integrations."
+    },
+    {
+      "section": "06 / SYSTEM DIAGRAM: NESTED STAGES",
+      "title": "Show what goes in, what happens inside and what comes out",
+      "subtitle": "Use column headers when inputs, a core process and outputs need labels.",
+      "layout": "system",
+      "container": {"label": "What goes in, what comes out"},
+      "columns": [
+        {"header": "You provide", "nodes": [
+          {"label": "Input A", "sub": "short detail"},
+          {"label": "Input B", "sub": "short detail"},
+          {"label": "Input C", "sub": "short detail"}
+        ]},
+        {"weight": 1.8, "nodes": [{"label": "Core process", "sub": "what it does in one line", "steps": [
+          {"label": "Step one", "sub": "tool or method"},
+          {"label": "Step two", "sub": "tool or method"},
+          {"label": "Step three", "sub": "tool or method"}
+        ]}]},
+        {"header": "You get", "nodes": [
+          {"label": "Result", "sub": "ready to use", "role": "step", "no_out": true},
+          {"label": "Hand-off", "sub": "one agreed file", "role": "handoff"}
+        ]},
+        {"header": "Hand-off to", "nodes": [{"label": "Next stage", "sub": "or an alternative", "role": "optional"}]}
+      ],
+      "takeaway": "A few inputs in; a ready result and one hand-off out.",
+      "source": "Generic skeleton only",
+      "notes": "Synthetic example using placeholder names. Replace with verified content."
     }
   ]
 }

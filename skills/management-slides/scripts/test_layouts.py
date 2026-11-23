@@ -38,7 +38,7 @@ class LayoutTests(unittest.TestCase):
             output = Path(tmp) / 'test.pptx'
             builder.build(spec, output)
             prs = Presentation(output)
-            self.assertEqual(len(prs.slides), 5)
+            self.assertEqual(len(prs.slides), 7)
             self.assertEqual(prs.slide_width, builder.Inches(builder.WIDTH))
             for slide in prs.slides:
                 self.assertTrue(slide.has_notes_slide)
@@ -62,6 +62,45 @@ class LayoutTests(unittest.TestCase):
             with self.assertRaises(FileExistsError):
                 builder.build(spec, output)
             self.assertEqual(before, output.read_bytes())
+
+    def test_system_layout_is_native_glued_and_guarded(self):
+        spec = json.loads(EXAMPLE.read_text())
+        spec['slides'] = [s for s in spec['slides'] if s.get('layout') == 'system']
+        with TemporaryDirectory(prefix='management-slides-test-') as tmp:
+            output = Path(tmp) / 'system.pptx'
+            builder.build(spec, output)
+            prs = Presentation(output)
+            self.assertEqual(len(prs.slides), 2)
+            for slide in prs.slides:
+                shapes = list(descendants(slide.shapes))
+                self.assertFalse([s for s in shapes if s.shape_type == MSO_SHAPE_TYPE.PICTURE])
+                connectors = slide._element.findall('.//' + qn('p:cxnSp'))
+                glued = [c for c in connectors if c.find('.//' + qn('a:stCxn')) is not None
+                         or c.find('.//' + qn('a:endCxn')) is not None]
+                self.assertGreater(len(glued), 0)
+                for shape in shapes:
+                    if shape.has_text_frame:
+                        for para in shape.text_frame.paragraphs:
+                            for run in para.runs:
+                                self.assertEqual(run.font.name or para.font.name, 'Arial')
+            first = prs.slides[0]
+            self.assertTrue(first._element.findall('.//' + qn('a:prstDash')))
+            names = {s.name for s in descendants(first.shapes)}
+            self.assertTrue({'system-container', 'legend', 'alternate-return'} <= names)
+            self.assertTrue(any(s.name.startswith('step-') for s in descendants(prs.slides[1].shapes)))
+
+    def test_system_layout_rejects_overcrowded_or_unlinkable_input(self):
+        base = {'title': 'T', 'takeaway': 'T', 'layout': 'system'}
+        too_long = dict(base, columns=[
+            {'nodes': [{'label': 'Overlong label ' * 12}]}
+        ] + [{'nodes': [{'label': str(i)}]} for i in range(6)])
+        unlinkable = dict(base, columns=[
+            {'nodes': [{'label': 'A'}, {'label': 'B'}]},
+            {'nodes': [{'label': 'C'}, {'label': 'D'}, {'label': 'E'}]}])
+        for item in (too_long, unlinkable):
+            with TemporaryDirectory(prefix='management-slides-test-') as tmp:
+                with self.assertRaises(ValueError):
+                    builder.build({'slides': [item]}, Path(tmp) / 'bad.pptx')
 
     def test_unknown_layout_rejected(self):
         with TemporaryDirectory(prefix='management-slides-test-') as tmp:

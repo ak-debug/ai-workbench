@@ -5,7 +5,9 @@ from pathlib import Path
 
 from pptx import Presentation
 from pptx.dml.color import RGBColor
+from pptx.enum.dml import MSO_LINE
 from pptx.enum.shapes import MSO_CONNECTOR, MSO_SHAPE
+from pptx.enum.text import MSO_ANCHOR, PP_ALIGN
 from pptx.oxml.xmlchemy import OxmlElement
 from pptx.util import Inches, Pt
 
@@ -191,6 +193,238 @@ def roadmap(slide, spec):
         card(slide, .5+i*(w+gap), 3.5, w, 2.38, step, 16)
 
 
+DASH, PILL_GRAY, PANEL_EDGE, SOFT_BLUE = '8A96A3', 'D1D5DB', 'DFE6EF', '9CC1FF'
+ROLE_STYLE = {  # fill, outline, dashed, label colour, sub-label colour
+    'input': (WHITE, BLUE, False, NAVY, GRAY),
+    'step': (NAVY, None, False, WHITE, MUTED),
+    'handoff': (BLUE, None, False, WHITE, 'DCE8FF'),
+    'optional': (WHITE, DASH, True, NAVY, GRAY),
+}
+NODE_GAP, ARROW_GAP, MIN_NODE_H = .10, .27, .44
+
+
+def _estimate_lines(chars, size, width):
+    return max(1, -(-int(chars * size * .55 / 72 * 100) // int(max(width, .1) * 100)))
+
+
+def _check_fit(data, w, h, size, sub_size):
+    """Rough guard only: rendered review is still required."""
+    inner = w - .12
+    need = _estimate_lines(len(data['label']), size, inner) * size * 1.2
+    if data.get('sub'):
+        need += _estimate_lines(len(data['sub']), sub_size, inner) * sub_size * 1.2
+    if need / 72 + .06 > h:
+        raise ValueError(f"System node '{data['label']}' is too long for a {w:.2f}x{h:.2f} in box; shorten it.")
+
+
+def _site(shape, index):
+    x, y, w, h = shape.left, shape.top, shape.width, shape.height
+    return [(x + w // 2, y), (x, y + h // 2), (x + w // 2, y + h), (x + w, y + h // 2)][index]
+
+
+def link(slide, start, end, color=NAVY, dashed=False, head=True, width=1.75, name='flow-connector'):
+    """Connector between (shape, site) glue points or (x, y) inch points.
+    Sites are 0 top, 1 left, 2 bottom, 3 right. Glued ends follow moved nodes."""
+    points = [_site(*p) if hasattr(p[0], 'left') else (Inches(p[0]), Inches(p[1])) for p in (start, end)]
+    straight = abs(points[0][0] - points[1][0]) < 9000 or abs(points[0][1] - points[1][1]) < 9000
+    shape = slide.shapes.add_connector(MSO_CONNECTOR.STRAIGHT if straight else MSO_CONNECTOR.ELBOW,
+                                       points[0][0], points[0][1], points[1][0], points[1][1])
+    shape.name = name
+    if hasattr(start[0], 'left'):
+        shape.begin_connect(*start)
+    if hasattr(end[0], 'left'):
+        shape.end_connect(*end)
+    shape.line.color.rgb = RGBColor.from_string(color)
+    shape.line.width = Pt(width)
+    if dashed:
+        shape.line.dash_style = MSO_LINE.DASH
+    if head:
+        arrow = OxmlElement('a:tailEnd')
+        arrow.set('type', 'triangle')
+        arrow.set('w', 'med')
+        arrow.set('len', 'med')
+        shape.line._get_or_add_ln().append(arrow)
+    return shape
+
+
+def system_node(slide, x, y, w, h, data, role, name, anchor=MSO_ANCHOR.MIDDLE, size=None):
+    fill, outline, dashed, label_color, sub_color = ROLE_STYLE[role]
+    shape = rectangle(slide, x, y, w, h, fill, True, name)
+    shape.adjustments[0] = min(.12, .10 / max(min(w, h), .1) * .5)
+    if outline:
+        shape.line.color.rgb = RGBColor.from_string(outline)
+        shape.line.width = Pt(1.5)
+        if dashed:
+            shape.line.dash_style = MSO_LINE.DASH
+    size = size or (12 if w < 1.9 else 13)
+    sub_size = size - 2
+    if not data.get('steps'):
+        _check_fit(data, w, h, size, sub_size)
+    frame = shape.text_frame
+    frame.word_wrap = True
+    frame.vertical_anchor = anchor
+    frame.margin_left = frame.margin_right = Inches(.06)
+    frame.margin_top = frame.margin_bottom = Inches(.04 if anchor == MSO_ANCHOR.MIDDLE else .10)
+    for i, (value, bold, color, pt) in enumerate([(data['label'], True, label_color, size),
+                                                  (data.get('sub', ''), False, sub_color, sub_size)]):
+        if i and not value:
+            break
+        para = frame.paragraphs[0] if i == 0 else frame.add_paragraph()
+        para.alignment = PP_ALIGN.CENTER
+        run = para.add_run()
+        run.text = value
+        run.font.name, run.font.size, run.font.bold = 'Arial', Pt(pt), bold
+        run.font.color.rgb = RGBColor.from_string(color)
+    return shape
+
+
+def engine_node(slide, x, y, w, h, data, name):
+    """Navy card with a header and stacked blue sub-steps; grouped so it moves as one."""
+    shape = system_node(slide, x, y, w, h, data, 'step', name, MSO_ANCHOR.TOP, 14)
+    shape.adjustments[0] = .05
+    steps = data['steps']
+    top, gap = y + .62, .16
+    step_h = (y + h - .15 - top - gap * (len(steps) - 1)) / len(steps)
+    if step_h < MIN_NODE_H:
+        raise ValueError(f"'{data['label']}' has too many sub-steps for the available height.")
+    parts, previous = [shape], None
+    for i, step in enumerate(steps):
+        current = system_node(slide, x + .22, top + i * (step_h + gap), w - .44, step_h, step,
+                              'handoff', f'{name}-step-{i + 1}', size=12)
+        parts.append(current)
+        if previous is not None:
+            parts.append(link(slide, (previous, 2), (current, 0), SOFT_BLUE, width=1.5, name=f'{name}-step-arrow'))
+        previous = current
+    slide.shapes.add_group_shape(parts).name = name
+    return shape
+
+
+def system_layout(slide, spec):
+    columns = spec['columns']
+    if not 2 <= len(columns) <= 7:
+        raise ValueError('A system diagram supports 2-7 columns.')
+    alternate, legend = spec.get('alternate'), spec.get('legend')
+    left, right, top = .5, 12.83, 2.78
+    headers = any(c.get('header') for c in columns)
+    height = 2.0 if alternate else (2.75 if legend else 3.2)
+    rectangle(slide, left, top, right - left, height, LIGHT, True, 'system-container')
+    container = slide.shapes[-1]
+    container.adjustments[0] = .06
+    container.line.color.rgb = RGBColor.from_string(BLUE)
+    container.line.width = Pt(1.75)
+    label = spec.get('container', {}).get('label', '').upper()
+    if label:
+        pill = system_node(slide, left + .27, top - .17, len(label) * .085 + .45, .33,
+                           {'label': label}, 'handoff', 'system-label', size=9.5)
+        pill.adjustments[0] = .5
+    inner_top = top + .32 + (.3 if headers else 0)
+    inner_h = height - (inner_top - top) - .12
+    inner_x, inner_w = left + .15, right - left - .3
+    unit = (inner_w - ARROW_GAP * (len(columns) - 1)) / sum(c.get('weight', 1) for c in columns)
+    placed, x = [], inner_x
+    for ci, column in enumerate(columns):
+        w, nodes = unit * column.get('weight', 1), column['nodes']
+        k = len(nodes)
+        tall = bool(column.get('tall')) or any(n.get('steps') for n in nodes)
+        gap = NODE_GAP if k > 1 else 0
+        node_h = (inner_h - gap * (k - 1)) / k
+        if not tall:
+            node_h = min(node_h, 1.1 if k == 1 else .9)
+        if node_h < MIN_NODE_H:
+            raise ValueError(f'Column {ci + 1} has too many nodes for the available height.')
+        y = inner_top + (inner_h - (node_h * k + gap * (k - 1))) / 2
+        if column.get('header'):
+            text(slide, x, top + .36, w, .22, column['header'].upper(), 9.5, GRAY, True, 'column-header')
+        shapes = []
+        for ni, data in enumerate(nodes):
+            role = data.get('role', 'input' if ci == 0 else 'step')
+            if role not in ROLE_STYLE:
+                raise ValueError(f'Unknown node role: {role}')
+            name = f"{role}-{data['label']}"
+            nx, ny = x, y + ni * (node_h + gap)
+            shapes.append(engine_node(slide, nx, ny, w, node_h, data, name) if data.get('steps')
+                          else system_node(slide, nx, ny, w, node_h, data, role, name))
+        placed.append((shapes, [n.get('role', 'input' if ci == 0 else 'step') for n in nodes]))
+        x += w + ARROW_GAP
+    for ci in range(len(columns) - 1):
+        (a, a_roles), (b, b_roles) = placed[ci], placed[ci + 1]
+        a_ids = [i for i, n in enumerate(columns[ci]['nodes']) if not n.get('no_out')]
+        b_ids = [i for i, n in enumerate(columns[ci + 1]['nodes']) if not n.get('no_in')]
+        if len(a_ids) == len(b_ids):
+            pairs = list(zip(a_ids, b_ids))
+        elif len(a_ids) == 1:
+            pairs = [(a_ids[0], j) for j in b_ids]
+        elif len(b_ids) == 1:
+            pairs = [(i, b_ids[0]) for i in a_ids]
+        else:
+            raise ValueError(f'Columns {ci + 1} and {ci + 2} cannot be linked: use equal counts or a single node.')
+        for i, j in pairs:
+            dashed = 'optional' in (a_roles[i], b_roles[j])
+            link(slide, (a[i], 3), (b[j], 1), DASH if dashed else NAVY, dashed)
+    lane_top = top + height + .15
+    if alternate:
+        start_node, end_node = (placed[i][0][j] for i, j in
+                                (alternate.get('from', [2, 0]), alternate.get('to', [len(columns) - 1, 0])))
+        start_x, end_x = [(n.left + n.width / 2) / 914400 for n in (start_node, end_node)]
+        alt_nodes = alternate['nodes']
+        first_x, last_x = start_x + .55, end_x - .55
+        if last_x - first_x < len(alt_nodes) * 1.1:
+            raise ValueError('Alternate lane has too little horizontal room for its nodes.')
+        caption = alternate.get('caption')
+        pill_label = alternate.get('label', '').upper()
+        pill = system_node(slide, first_x, lane_top, len(pill_label) * .085 + .45, .30,
+                           {'label': pill_label}, 'optional', 'alternate-label', size=9.5)
+        pill.adjustments[0] = .5
+        pill.fill.fore_color.rgb = RGBColor.from_string(PILL_GRAY)
+        pill.line.fill.background()
+        node_y = lane_top + .36
+        if caption:
+            text(slide, first_x, node_y - .02, last_x - first_x, .22, caption, 10.5, GRAY, name='alternate-caption')
+            node_y += .24
+        alt_h = 6.08 - node_y
+        gap = .22
+        alt_w = min(2.3, (last_x - first_x - gap * (len(alt_nodes) - 1)) / len(alt_nodes))
+        row = [system_node(slide, first_x + i * (alt_w + gap), node_y, alt_w, alt_h, data, 'optional',
+                           f"optional-{data['label']}") for i, data in enumerate(alt_nodes)]
+        mid_y = node_y + alt_h / 2
+        link(slide, (start_node, 2), (start_x, mid_y), DASH, True, False, 1.5, 'alternate-drop')
+        link(slide, (start_x, mid_y), (row[0], 1), DASH, True, True, 1.5, 'alternate-entry')
+        for a, b in zip(row, row[1:]):
+            link(slide, (a, 3), (b, 1), DASH, True, True, 1.5, 'alternate-step-arrow')
+        link(slide, (row[-1], 3), (end_x, mid_y), DASH, True, False, 1.5, 'alternate-exit')
+        link(slide, (end_x, mid_y), (end_node, 2), DASH, True, True, 1.5, 'alternate-return')
+        legend_y, legend_x = lane_top, left
+        if legend and start_x - left < 3.9:
+            raise ValueError('The legend overlaps the alternate path: move the alternate source column right or drop the legend.')
+    if legend:
+        horizontal = not alternate
+        row_h = .32
+        box_w = 3.5 if not horizontal else right - left
+        box_h = .24 + row_h * len(legend) if not horizontal else .42
+        legend_y = lane_top if alternate else top + height + .12
+        box = rectangle(slide, left, legend_y, box_w, box_h, WHITE, True, 'legend-background')
+        box.adjustments[0] = .08
+        box.line.color.rgb = RGBColor.from_string(PANEL_EDGE)
+        box.line.width = Pt(1)
+        parts, step_x = [box], (box_w - .3) / len(legend)
+        for i, entry in enumerate(legend):
+            if entry['role'] not in ROLE_STYLE:
+                raise ValueError(f"Unknown legend role: {entry['role']}")
+            ex = left + .24 + (i * step_x if horizontal else 0)
+            ey = legend_y + (.12 if not horizontal else .1) + (0 if horizontal else i * row_h)
+            fill, outline, dashed, _, _ = ROLE_STYLE[entry['role']]
+            swatch = rectangle(slide, ex, ey + .03, .46, .17, fill, True, 'legend-swatch')
+            swatch.adjustments[0] = .3
+            if outline:
+                swatch.line.color.rgb = RGBColor.from_string(outline)
+                swatch.line.width = Pt(1.25)
+                if dashed:
+                    swatch.line.dash_style = MSO_LINE.DASH
+            parts += [swatch, text(slide, ex + .59, ey, (step_x if horizontal else box_w) - .9, .24,
+                                   entry['text'], 10.5, GRAY, name='legend-label')]
+        slide.shapes.add_group_shape(parts).name = 'legend'
+
+
 def build(spec, output, overwrite=False):
     output = Path(output)
     if output.suffix.lower() != '.pptx':
@@ -215,6 +449,8 @@ def build(spec, output, overwrite=False):
             before_after(slide, item)
         elif layout == 'roadmap':
             roadmap(slide, item)
+        elif layout == 'system':
+            system_layout(slide, item)
         else:
             raise ValueError(f'Unknown layout: {layout}')
         for shape in slide.shapes:

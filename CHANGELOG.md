@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.7.0 (unreleased)
+
+- Management Slides 1.1.0: add a `system` diagram pattern (container, role-coded nodes,
+  nested stages, dashed optional path and legend), a generator layout that glues
+  connectors to shapes, and guidance on building diagrams natively rather than placing
+  draw.io or other exported images.
+
 ## 1.6.0 (unreleased)
 
 - Include social posts in the writing skill and global guidance, with audience-aware tone.

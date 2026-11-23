@@ -9,8 +9,8 @@ A portable Agent Skill for clear executive presentations: **3–4 slides**, one 
 | Resource | Purpose |
 | --- | --- |
 | `SKILL.md` | Agent instructions, visual defaults, evidence rules and revision workflow |
-| `references/design-guide.md` | Fonts, colors, geometry, diagram patterns and quality checklist |
-| `references/example-deck.json` | Four generic layout skeletons; replace placeholders with vetted content |
+| `references/design-guide.md` | Fonts, colors, geometry, diagram patterns (incl. `system`), diagram build workflow and quality checklist |
+| `references/example-deck.json` | Six generic layout skeletons; replace placeholders with vetted content |
 | `assets/style-preview.png` | Newly drawn visual reference with no source screenshots or real product data |
 | `scripts/build_deck.py` | Optional editable PowerPoint generator; cards move as ungroupable native groups |
 | `scripts/build_preview.py` | Recreates the generic skeleton PNG from code |
@@ -37,9 +37,9 @@ python scripts/build_deck.py --spec references/example-deck.json --output /path/
 python scripts/test_layouts.py
 ```
 
-Replace the skeleton's labels with researched, concise content before producing a real presentation. Layouts: `cards`, `flow`, `hub`, `before-after`, `roadmap`. The generator refuses to overwrite by default. Use `--overwrite` only for an authorized file update; it is not a safe replacement for patching an edited deck.
+Replace the skeleton's labels with researched, concise content before producing a real presentation. Layouts: `cards`, `flow`, `hub`, `before-after`, `roadmap`, `system`. The generator refuses to overwrite by default. Use `--overwrite` only for an authorized file update; it is not a safe replacement for patching an edited deck.
 
-**Boundaries:** the generator does not research facts, export PDF or prove visual quality. It uses native shape groups for cards and live text; connectors remain separately editable, and moving nodes may require adjusting connector endpoints. Individual group components can be selected or ungrouped in PowerPoint.
+**Boundaries:** the generator does not research facts, export PDF or prove visual quality. It uses native shape groups for cards and live text. In the `system` layout, connectors are glued to the shapes' connection points so they follow a moved node; in the other layouts connectors are separately editable and may need endpoint adjustment. A rough text-fit guard rejects clearly overlong `system` labels, but rendered review is still required. Individual group components can be selected or ungrouped in PowerPoint.
 
 With a locally installed LibreOffice renderer, export a PDF using:
 
