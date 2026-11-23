@@ -48,7 +48,8 @@ class LayoutTests(unittest.TestCase):
                         continue
                     for para in shape.text_frame.paragraphs:
                         for run in para.runs:
-                            self.assertEqual(run.font.name or para.font.name, 'Arial')
+                            self.assertEqual(run.font.name, 'Arial')      # on the run: PowerPoint ignores paragraph defaults
+                            self.assertIsNotNone(run.font.size)
             # The first layout is a three-node flow with two directed connectors.
             arrows = prs.slides[0]._element.findall('.//' + qn('a:tailEnd'))
             self.assertEqual(len(arrows), 2)
@@ -82,7 +83,8 @@ class LayoutTests(unittest.TestCase):
                     if shape.has_text_frame:
                         for para in shape.text_frame.paragraphs:
                             for run in para.runs:
-                                self.assertEqual(run.font.name or para.font.name, 'Arial')
+                                self.assertEqual(run.font.name, 'Arial')      # on the run: PowerPoint ignores paragraph defaults
+                                self.assertIsNotNone(run.font.size)
             first = prs.slides[0]
             self.assertTrue(first._element.findall('.//' + qn('a:prstDash')))
             names = {s.name for s in descendants(first.shapes)}

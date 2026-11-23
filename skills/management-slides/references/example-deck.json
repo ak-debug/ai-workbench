@@ -75,7 +75,6 @@
       ],
       "alternate": {
         "label": "Other ways: an existing path",
-        "caption": "Reuse the hand-off with tools you already have",
         "from": [2, 0],
         "to": [6, 0],
         "nodes": [
@@ -94,7 +93,7 @@
     },
     {
       "section": "06 / SYSTEM DIAGRAM: NESTED STAGES",
-      "title": "Show what goes in, what happens inside and what comes out",
+      "title": "Show inputs, the core process and outputs",
       "subtitle": "Use column headers when inputs, a core process and outputs need labels.",
       "layout": "system",
       "container": {"label": "What goes in, what comes out"},

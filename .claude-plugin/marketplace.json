@@ -2,13 +2,13 @@
   "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
   "name": "ai-workbench",
   "description": "Reusable AI agent skills, tools and plugins for practical work.",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "owner": {"name": "ak-debug", "url": "https://github.com/ak-debug"},
   "plugins": [
     {
       "name": "management-slides",
       "description": "Concise executive presentations with editable PowerPoint diagrams.",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "source": "./",
       "strict": false,
       "skills": ["./skills/management-slides"],

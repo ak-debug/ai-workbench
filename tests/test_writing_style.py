@@ -89,7 +89,7 @@ class WritingStyleTests(unittest.TestCase):
                          ['./skills/personal-writing-style'])
         self.assertEqual(entries['personal-writing-style']['source'], './')
         self.assertFalse(entries['personal-writing-style']['strict'])
-        self.assertEqual(entries['management-slides']['version'], '1.1.0')
+        self.assertEqual(entries['management-slides']['version'], '1.2.0')
         self.assertEqual(entries['personal-writing-style']['version'], '1.5.0')
 
 

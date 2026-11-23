@@ -18,6 +18,23 @@ A portable Agent Skill for clear executive presentations: **3–4 slides**, one 
 | `requirements.txt` | Optional deck-generation dependency |
 | `requirements-preview.txt` | Optional PNG-generation dependency |
 
+## Scripts
+
+| Script | Purpose |
+|---|---|
+| `scripts/deck_kit.py` | **Design kit.** Type scale, grid, real Arial text measurement, and fit-checked primitives (`card`, `table`, `node`, `badge`, `pill`, `link`, `base`, `row_x`, `center_y`, `card_height`). Raises one error listing every overflow via `finish()`. Build new decks on this. |
+| `scripts/lint_deck.py` | Lints any finished `.pptx`: text below 12 pt, text overflowing its shape, non-Arial runs, off-canvas shapes, overlapping text, heavy slides. Exit code 1 on errors. |
+| `scripts/render_preview.py` | `.pptx` to PDF, per-slide PNGs and contact sheets, for visual inspection. |
+| `scripts/build_deck.py` | Original generator: six simple layouts from a JSON spec. Fixed card heights, no fit check: use only for a short 3–4 slide summary. |
+| `references/example-builder.py` | Minimal worked builder on `deck_kit` (cards + table). Copy it. |
+
+Typical flow for a new deck:
+
+```sh
+python scripts/lint_deck.py deck.pptx                   # must report 0 errors
+python scripts/render_preview.py deck.pptx /tmp/preview  # then look at every slide
+```
+
 ## Install and use
 
 Copy this complete folder to your host's supported skill directory. For OpenCode, use `~/.agents/skills/management-slides/`; for standalone Claude Code, use `~/.claude/skills/management-slides/`. See [repository installation instructions](../../docs/INSTALL.md) for marketplace use and other hosts. Installation does not execute the scripts.
@@ -34,7 +51,8 @@ Use Python 3.10 or later in a virtual environment at a suitable scratch location
 python -m pip install -r requirements.txt
 python scripts/build_deck.py --help
 python scripts/build_deck.py --spec references/example-deck.json --output /path/to/output/Skeleton.pptx
-python scripts/test_layouts.py
+python scripts/test_layouts.py   # legacy generator
+python scripts/test_kit.py       # design kit and lint
 ```
 
 Replace the skeleton's labels with researched, concise content before producing a real presentation. Layouts: `cards`, `flow`, `hub`, `before-after`, `roadmap`, `system`. The generator refuses to overwrite by default. Use `--overwrite` only for an authorized file update; it is not a safe replacement for patching an edited deck.
@@ -59,6 +77,11 @@ python scripts/build_preview.py --output assets/style-preview.png --font /path/t
 ```
 
 Font files are not bundled. Supply locally licensed font files. The preview script is separate from the PowerPoint renderer: its PNG demonstrates the visual language, not a pixel-exact render of a generated deck. It refuses to overwrite unless `--overwrite` is supplied.
+
+## Changelog
+
+- **Design kit, lint and preview** (added after a long deck was judged visually poor): one type scale and grid, measured text fit, flat shapes, visible tags on dark panels, measured table headers, lint and render tooling.
+- **Bug fix in `build_deck.py`**: `text()` set font, size, bold and colour on the paragraph (`a:defRPr`), which PowerPoint ignores, so headlines, subtitles, takeaways and footers rendered in the theme font and size in PowerPoint while previews rendered in LibreOffice looked correct. It now sets them on the run. Positions and sizes are unchanged. Decks built before this fix should be rebuilt. The legacy generator otherwise still produces the older look (system diagrams at 12–13 pt); migrate a deck by rebuilding its builder on `deck_kit`.
 
 ## Share
 
