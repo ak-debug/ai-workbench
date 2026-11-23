@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.8.0 (unreleased)
+
+- Management Slides 1.2.0: add a design kit (`deck_kit.py`) with one type scale, one grid and
+  measured text fit, plus `lint_deck.py` and `render_preview.py` for checking finished decks.
+- Fix `build_deck.py` setting fonts on the paragraph instead of the run: PowerPoint ignores
+  paragraph defaults, so headlines and footers could render in the theme font and size.
+- Bring the `system` layout and slide chrome onto the 12 pt minimum (footer 10 pt) and name
+  slide-chrome shapes. Document the type scale, grid and a "deck looks bad" diagnosis in the
+  skill and design guide.
+
 ## 1.7.0 (unreleased)
 
 - Management Slides 1.1.0: add a `system` diagram pattern (container, role-coded nodes,

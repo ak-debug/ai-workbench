@@ -39,11 +39,14 @@ def text(slide, x, y, w, h, value, size=18, color=NAVY, bold=False, name='text')
     lines = value if isinstance(value, list) else str(value).split('\n')
     for i, line in enumerate(lines):
         para = frame.paragraphs[0] if i == 0 else frame.add_paragraph()
-        para.text = str(line)
-        para.font.name = 'Arial'
-        para.font.size = Pt(size)
-        para.font.bold = bold
-        para.font.color.rgb = RGBColor.from_string(color)
+        # Font properties must be on the RUN. PowerPoint ignores paragraph-level defaults (a:defRPr), so text
+        # styled only through para.font renders in the theme font and size even though LibreOffice honours it.
+        run = para.add_run()
+        run.text = str(line)
+        run.font.name = 'Arial'
+        run.font.size = Pt(size)
+        run.font.bold = bold
+        run.font.color.rgb = RGBColor.from_string(color)
         para.space_after = Pt(9)
     return shape
 
@@ -100,14 +103,14 @@ def base(prs, spec, number, footer):
     slide.background.fill.solid()
     slide.background.fill.fore_color.rgb = RGBColor.from_string(WHITE)
     rectangle(slide, .5, .4, .65, .065, BLUE, name='top-accent')
-    text(slide, .5, .66, 12.3, .3, spec.get('section', ''), 11, BLUE, True)
+    text(slide, .5, .66, 12.3, .3, spec.get('section', ''), 12, BLUE, True, 'section')
     text(slide, .5, 1.1, 12.3, .83, spec['title'], 30, NAVY, True, 'headline')
-    text(slide, .5, 1.98, 12.3, .52, spec.get('subtitle', ''), 17, GRAY)
+    text(slide, .5, 1.98, 12.3, .44, spec.get('subtitle', ''), 17, GRAY, name='subtitle')
     rectangle(slide, .5, 6.2, 12.33, .6, NAVY, True, 'takeaway-strip')
     rectangle(slide, .5, 6.31, .045, .36, CYAN, name='takeaway-accent')
-    text(slide, .76, 6.35, 11.8, .37, spec['takeaway'], 18, WHITE, True)
-    text(slide, .5, 7.05, 10.7, .22, spec.get('source', ''), 8, GRAY)
-    text(slide, 11.5, 7.05, 1.34, .22, f'{number:02d} · {footer}', 7.5, GRAY)
+    text(slide, .76, 6.35, 11.8, .37, spec['takeaway'], 18, WHITE, True, 'takeaway')
+    text(slide, .5, 7.05, 10.2, .22, spec.get('source', ''), 10, GRAY, name='source')
+    text(slide, 10.83, 7.05, 2.0, .22, f'{number:02d} · {footer}', 10, GRAY, name='footer')
     slide.notes_slide.notes_text_frame.text = spec.get('notes', '')
     return slide
 
@@ -200,7 +203,8 @@ ROLE_STYLE = {  # fill, outline, dashed, label colour, sub-label colour
     'handoff': (BLUE, None, False, WHITE, 'DCE8FF'),
     'optional': (WHITE, DASH, True, NAVY, GRAY),
 }
-NODE_GAP, ARROW_GAP, MIN_NODE_H = .10, .27, .44
+NODE_GAP, ARROW_GAP, MIN_NODE_H = .10, .27, .52
+SYS_LABEL, SYS_SUB, PILL_PER_CHAR = 14, 12, .105  # same scale as the design guide: nothing below 12 pt
 
 
 def _estimate_lines(chars, size, width):
@@ -256,8 +260,8 @@ def system_node(slide, x, y, w, h, data, role, name, anchor=MSO_ANCHOR.MIDDLE, s
         shape.line.width = Pt(1.5)
         if dashed:
             shape.line.dash_style = MSO_LINE.DASH
-    size = size or (12 if w < 1.9 else 13)
-    sub_size = size - 2
+    size = size or SYS_LABEL
+    sub_size = SYS_SUB
     if not data.get('steps'):
         _check_fit(data, w, h, size, sub_size)
     frame = shape.text_frame
@@ -280,17 +284,17 @@ def system_node(slide, x, y, w, h, data, role, name, anchor=MSO_ANCHOR.MIDDLE, s
 
 def engine_node(slide, x, y, w, h, data, name):
     """Navy card with a header and stacked blue sub-steps; grouped so it moves as one."""
-    shape = system_node(slide, x, y, w, h, data, 'step', name, MSO_ANCHOR.TOP, 14)
+    shape = system_node(slide, x, y, w, h, data, 'step', name, MSO_ANCHOR.TOP)
     shape.adjustments[0] = .05
     steps = data['steps']
-    top, gap = y + .62, .16
-    step_h = (y + h - .15 - top - gap * (len(steps) - 1)) / len(steps)
+    top, gap = y + .60, .12
+    step_h = (y + h - .12 - top - gap * (len(steps) - 1)) / len(steps)
     if step_h < MIN_NODE_H:
         raise ValueError(f"'{data['label']}' has too many sub-steps for the available height.")
     parts, previous = [shape], None
     for i, step in enumerate(steps):
         current = system_node(slide, x + .22, top + i * (step_h + gap), w - .44, step_h, step,
-                              'handoff', f'{name}-step-{i + 1}', size=12)
+                              'handoff', f'{name}-step-{i + 1}')
         parts.append(current)
         if previous is not None:
             parts.append(link(slide, (previous, 2), (current, 0), SOFT_BLUE, width=1.5, name=f'{name}-step-arrow'))
@@ -304,9 +308,9 @@ def system_layout(slide, spec):
     if not 2 <= len(columns) <= 7:
         raise ValueError('A system diagram supports 2-7 columns.')
     alternate, legend = spec.get('alternate'), spec.get('legend')
-    left, right, top = .5, 12.83, 2.78
+    left, right, top = .5, 12.83, 2.62
     headers = any(c.get('header') for c in columns)
-    height = 2.0 if alternate else (2.75 if legend else 3.2)
+    height = 2.35 if alternate else (2.9 if legend else 3.35)
     rectangle(slide, left, top, right - left, height, LIGHT, True, 'system-container')
     container = slide.shapes[-1]
     container.adjustments[0] = .06
@@ -314,10 +318,10 @@ def system_layout(slide, spec):
     container.line.width = Pt(1.75)
     label = spec.get('container', {}).get('label', '').upper()
     if label:
-        pill = system_node(slide, left + .27, top - .17, len(label) * .085 + .45, .33,
-                           {'label': label}, 'handoff', 'system-label', size=9.5)
+        pill = system_node(slide, left + .27, top - .17, len(label) * PILL_PER_CHAR + .45, .33,
+                           {'label': label}, 'handoff', 'system-label', size=12)
         pill.adjustments[0] = .5
-    inner_top = top + .32 + (.3 if headers else 0)
+    inner_top = top + .32 + (.34 if headers else 0)
     inner_h = height - (inner_top - top) - .12
     inner_x, inner_w = left + .15, right - left - .3
     unit = (inner_w - ARROW_GAP * (len(columns) - 1)) / sum(c.get('weight', 1) for c in columns)
@@ -334,7 +338,7 @@ def system_layout(slide, spec):
             raise ValueError(f'Column {ci + 1} has too many nodes for the available height.')
         y = inner_top + (inner_h - (node_h * k + gap * (k - 1))) / 2
         if column.get('header'):
-            text(slide, x, top + .36, w, .22, column['header'].upper(), 9.5, GRAY, True, 'column-header')
+            text(slide, x, top + .36, w, .24, column['header'].upper(), 12, GRAY, True, 'column-header')
         shapes = []
         for ni, data in enumerate(nodes):
             role = data.get('role', 'input' if ci == 0 else 'step')
@@ -372,16 +376,18 @@ def system_layout(slide, spec):
             raise ValueError('Alternate lane has too little horizontal room for its nodes.')
         caption = alternate.get('caption')
         pill_label = alternate.get('label', '').upper()
-        pill = system_node(slide, first_x, lane_top, len(pill_label) * .085 + .45, .30,
-                           {'label': pill_label}, 'optional', 'alternate-label', size=9.5)
+        pill = system_node(slide, first_x, lane_top, len(pill_label) * PILL_PER_CHAR + .45, .30,
+                           {'label': pill_label}, 'optional', 'alternate-label', size=12)
         pill.adjustments[0] = .5
         pill.fill.fore_color.rgb = RGBColor.from_string(PILL_GRAY)
         pill.line.fill.background()
         node_y = lane_top + .36
         if caption:
-            text(slide, first_x, node_y - .02, last_x - first_x, .22, caption, 10.5, GRAY, name='alternate-caption')
-            node_y += .24
+            text(slide, first_x, node_y - .02, last_x - first_x, .24, caption, 12, GRAY, name='alternate-caption')
+            node_y += .26
         alt_h = 6.08 - node_y
+        if alt_h < MIN_NODE_H:
+            raise ValueError('Alternate lane has no room for a caption: drop the caption or the legend.')
         gap = .22
         alt_w = min(2.3, (last_x - first_x - gap * (len(alt_nodes) - 1)) / len(alt_nodes))
         row = [system_node(slide, first_x + i * (alt_w + gap), node_y, alt_w, alt_h, data, 'optional',
@@ -421,7 +427,7 @@ def system_layout(slide, spec):
                 if dashed:
                     swatch.line.dash_style = MSO_LINE.DASH
             parts += [swatch, text(slide, ex + .59, ey, (step_x if horizontal else box_w) - .9, .24,
-                                   entry['text'], 10.5, GRAY, name='legend-label')]
+                                   entry['text'], 12, GRAY, name='legend-label')]
         slide.shapes.add_group_shape(parts).name = 'legend'
 
 
